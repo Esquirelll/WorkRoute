@@ -1,0 +1,132 @@
+/* Self-hosted font (bundled by Vite, no request to Google). Variable font = one file, many weights. */
+@import '@fontsource-variable/atkinson-hyperlegible-next';
+@import 'tailwindcss';
+
+/*
+  DESIGN TOKENS. Tailwind v4 reads this @theme block and turns every
+  variable into utility classes (e.g. --color-brand-600 -> bg-brand-600).
+  Change a value here and the whole site updates.
+*/
+@theme {
+  --font-sans: 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible Next', sans-serif;
+
+  /* Blue = the workplace and the app's main color */
+  --color-brand-50: #e8eff8;
+  --color-brand-100: #d3e1f2;
+  --color-brand-600: #1d4f91;
+  --color-brand-700: #163f75;
+  --color-brand-800: #10305a;
+
+  /* Orange = the commute. Used for route lines and icons only, never for text. */
+  --color-route-100: #fbebd9;
+  --color-route-500: #b45f06;
+
+  /* Neutrals: warm gray page, white cards, thin borders */
+  --color-page: #f3f2ef;
+  --color-surface: #ffffff;
+  --color-line: #d8d5cf;
+  /* Edges of form fields, chips and choice cards. WCAG needs 3:1 against the surface: 3.9:1 on white, 3.5:1 on the page. */
+  --color-line-strong: #85817a;
+  --color-ink: #1b1e22;
+  --color-muted: #545960;
+
+  /* Status colors. Always shown together with an icon AND a text label. */
+  --color-ok: #1d6b3a;
+  --color-ok-bg: #e5f1e9;
+  --color-warn: #7f5200;
+  --color-warn-bg: #faefd3;
+  --color-no: #9b2c2c;
+  --color-no-bg: #f8e2e2;
+
+  /* Type scale (rem, so it grows when users enlarge their text) */
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.375rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.625rem;
+  --text-xl: 1.4375rem;
+  --text-xl--line-height: 1.875rem;
+  --text-2xl: 1.8125rem;
+  --text-2xl--line-height: 2.25rem;
+  --text-3xl: 2.25rem;
+  --text-3xl--line-height: 2.625rem;
+
+  /* Motion tokens for plain CSS transitions (hover colors, chevrons). They MUST equal duration.fast and
+     ease in src/motion/motion.ts: a test checks it. Every `transition-*` class in Tailwind uses these. */
+  --default-transition-duration: 160ms;
+  --default-transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Different radius for different jobs, so not everything looks identical */
+  --radius-tag: 4px;
+  --radius-control: 8px;
+  --radius-card: 12px;
+
+  /* One real shadow, reserved for things that float (menus). Cards use borders. */
+  --shadow-float: 0 8px 24px -6px rgb(27 30 34 / 0.22), 0 1px 3px rgb(27 30 34 / 0.12);
+}
+
+@layer base {
+  html {
+    background: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    min-height: 100dvh;
+    font-size: var(--text-base);
+    line-height: 1.5;
+  }
+  /* Big text on a small screen must never push the page sideways. Fieldsets and selects have their own
+     minimum widths by default; and a very long word breaks instead of overflowing (only when it cannot fit). */
+  fieldset { min-width: 0; }
+  select { max-width: 100%; }
+  main, footer, header { overflow-wrap: anywhere; }
+  h1, h2, h3 { font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+  p { max-width: 68ch; }
+
+  /* Visible focus for everyone using a keyboard. Never remove this. */
+  :focus-visible {
+    outline: 3px solid var(--color-brand-600);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline-offset: 1px;
+  }
+
+  /* If a user asks their device to reduce motion, switch off CSS animation too. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Skip link: invisible until a keyboard user tabs to it */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -4rem;
+  z-index: 100;
+  background: var(--color-brand-800);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-control);
+  font-weight: 700;
+}
+.skip-link:focus { top: 0.75rem; }
+
+/* Pulse used by loading skeletons; disabled automatically by the reduced-motion rule above */
+@keyframes wr-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+.wr-skeleton { background: var(--color-line); border-radius: var(--radius-tag); animation: wr-pulse 1.6s ease-in-out infinite; /* a slow, quiet pulse; reduced motion switches it off */ }
+
+/* Opt-in tabular (equal-width) digits for times and scores, so numbers line up. */
+.tnum { font-variant-numeric: tabular-nums; }

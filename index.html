@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1D4F91" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>WorkRoute</title>
+    <!--
+      Shown only while the site's JavaScript is still downloading (slow connections).
+      It follows the same rule as the loader inside the app: it stays INVISIBLE for the first 400 ms
+      (pure CSS animation-delay), so on a normal connection nobody ever sees it. React replaces it on start.
+      Styles are inline because the main stylesheet may not have arrived yet.
+    -->
+    <style>
+      /* Only the background and margin here. Setting text color or font on html/body would override the real styles. */
+      html, body { margin: 0; background: #f3f2ef; }
+      .boot { color: #545960; font-family: system-ui, sans-serif; display: flex; align-items: center; gap: 12px; padding: 24px 16px; max-width: 72rem; margin: 0 auto; opacity: 0; animation: boot-in 1ms linear 400ms forwards; }
+      .boot svg { width: 24px; height: 24px; flex: none; }
+      .boot-line { width: 112px; height: 24px; flex: none; }
+      .boot-dot { animation: boot-move 1400ms cubic-bezier(0.2, 0, 0, 1) infinite; }
+      .boot span { font-size: 0.9375rem; font-weight: 700; }
+      @keyframes boot-in { to { opacity: 1; } }
+      @keyframes boot-move { from { transform: translateX(0); } to { transform: translateX(88px); } }
+      @media (prefers-reduced-motion: reduce) { .boot-dot { animation: none; transform: translateX(48px); } }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="boot" role="status" aria-busy="true">
+        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M9 25h8a6 6 0 0 0 6-6v-6" fill="none" stroke="#1D4F91" stroke-width="2.6" stroke-linecap="round" /><circle cx="8" cy="25" r="3.6" fill="#B45F06" /><rect x="18.5" y="4.5" width="9" height="9" rx="2.2" fill="#1D4F91" /></svg>
+        <svg class="boot-line" viewBox="0 0 120 24" aria-hidden="true" focusable="false"><path d="M8 12h96" stroke="#d8d5cf" stroke-width="3" stroke-linecap="round" /><rect x="104" y="6" width="12" height="12" rx="3" fill="#1D4F91" /><circle class="boot-dot" cx="8" cy="12" r="5" fill="#B45F06" /></svg>
+        <span>Loading WorkRoute…</span>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
